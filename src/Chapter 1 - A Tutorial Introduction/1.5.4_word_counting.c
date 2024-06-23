@@ -30,7 +30,6 @@ void wordCount() {
     nlines = nwords = nchars = 0;
 
     int state = OUT;
-
     int c;
 
     while ((c = getchar()) != EOF) {

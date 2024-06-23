@@ -1,27 +1,62 @@
 #include <stdio.h>
 
 #define TABSTOP 4
-#define MAXCOLUMN 80
+#define MAXCOLUMN 10
 
-// Replace strings of blanks with tabs and spaces to suffice the blanks
-void entab() {
-    int c, previousChar, count;
-    previousChar = EOF;
-    count = 0;
+void fold() {
+    int c, line_pos, lastNonBlankCharPos;
+    line_pos = 0;
 
     while((c = getchar()) != EOF) {
-        if(c == ' ') {
-            ++count;
+        ++line_pos;
 
-            while((c = getchar()) != EOF) {
+        if(line_pos < MAXCOLUMN) {
+            if(c != ' ' && c != '\t') {
+                lastNonBlankCharPos = line_pos;
+            }
+        }
+
+        if(line_pos > (MAXCOLUMN - 1) && lastNonBlankCharPos <= (MAXCOLUMN - 1)) {
+            putchar('\n');
+            line_pos = 0;
+        }
+        putchar(c);
+    }
+}
+
+void entab() {
+    int c, line_pos, blanks;
+    blanks = line_pos = 0;
+
+    while((c = getchar()) != EOF) {
+
+        // foo__bar
+        if(c == ' ') {
+            ++blanks;
+            ++line_pos;
+
+            if(line_pos % TABSTOP == 0 && blanks == 4) {
+                putchar('\t');
+                blanks = line_pos = 0;
             }
         }else {
+            line_pos = 0;
+
+            // this sets the blanks to 0
+            while(blanks) {
+                putchar(' ');
+                --blanks;
+            }
+
+            if(c == '\n') {
+                line_pos = 0;
+            }
+
             putchar(c);
         }
     }
 }
 
-// Replace tabstops with blanks
 void detab() {
     int c;
 
@@ -38,6 +73,8 @@ void detab() {
 
 int main() {
     // detab();
-    entab();
+    // entab();
+
+    fold();
     return 0;
 }
