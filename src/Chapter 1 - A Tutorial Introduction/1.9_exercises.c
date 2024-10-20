@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
+#include <string.h>
 
 // the maximum no of chars that can be read from an input
 #define MAXCHARS 1000
@@ -9,7 +10,7 @@ void copyStringBackwards(char dest[], char src[], int len) {
     int newLineCharPos = len - 1;
     idx = 0;
 
-    // hello\n
+    // hello\n\0
     for(i = (len - 2); i >= 0; --i) {
         dest[idx++] = src[i];
 
@@ -19,6 +20,8 @@ void copyStringBackwards(char dest[], char src[], int len) {
             dest[idx] = '\0';
         }
     }
+
+    // printf("Index at the end of the loop: %d\n", idx);
 }
 
 char* reverseString(char dest[], char src[], int len) {
@@ -79,10 +82,17 @@ int main() {
     char reversedStr[MAXCHARS];
     int len = 0;
 
+    /*
     while((len = getLenOfInput(buf)) > 0) {
         // printf("Length is %d", len);
         // printf("%s", reverseString(reversedStr, buf, len));
     }
+    */
+
+
+    char str[] = "hello\n";
+    copyStringBackwards(buf, str, strlen(str));
+    printf("%s\n", buf);
 
     return 0;
 }
